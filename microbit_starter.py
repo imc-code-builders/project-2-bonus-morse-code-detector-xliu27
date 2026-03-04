@@ -23,20 +23,60 @@ message = []
 
 while True:
     display.clear()
+    
+
+
 
     # TASK 4: Shake to scroll the full message
+    if accelerometer.was_gesture('shake'):
+        full_text = ''.join(message)
+        display.scroll(full_text)
+
 
 
     # TASK 2: Decode current_symbol when logo is touched
     if pin_logo.is_touched():
-        print(current_symbol)
+        if current_symbol != "":
+            letter = morse_dict.get(current_symbol, "?")
+            print(current_symbol)
+            message.append(letter)
+            current_symbol = ""
+            display.show(letter)
+            music.pitch(500)
+            sleep(1000)
+            music.stop()
+
 
     # TASK 1: Record dots and dashes (Button A = dot, Button B = dash)
     # Build current_symbol as a string like 'dot-dash-dot'
     elif button_a.was_pressed():
-        pass
+        if current_symbol == "":
+            current_symbol = "dot"
+        else:
+            current_symbol += "-dot"
+            
+        display.show(Image('00000:'
+                    '00000:'
+                    '36963:'
+                    '00000:'
+                    '00000'))
+        music.pitch(200)
+        sleep(100)
+        music.stop()
+    
 
     elif button_b.was_pressed():
-        pass
+        if current_symbol == "":
+            current_symbol = "dash"
+        else:
+            current_symbol += "-dash"
+            display.show(Image('00300:'
+                    '03630:'
+                    '36963:'
+                    '03630:'
+                    '00300'))
+            music.pitch(300)
+            sleep(300)
+            music.stop()
 
     # TASK 3: Add display and sound to each of the above
